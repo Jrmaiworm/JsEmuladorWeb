@@ -1,0 +1,243 @@
+<html>
+	<head>
+  <title>Super jogos | Selecione seu jogo</title>
+  <link rel="icon" type="image/png" href="docs/rayden.png">
+</head>
+    <body>
+	<style>
+/* body{
+  background: #e2dfdf;
+	margin: 0;
+	padding: 0;
+} */
+
+body {
+    background-image: url("") ;
+    background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background: #6666;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+footer {
+  margin-top: auto;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 0px;
+}
+.form{
+  position: absolute;
+  top: 450px;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -250px;
+  width: 500px;
+  height: 200px;
+  border: 4px dashed #111;
+}
+.form p{
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 170px;
+  color: #000;
+  font-family: Arial;
+  text-shadow: rgb(255, 0, 0) 1px 0 5px;
+}
+.form input{
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+}
+.eimg{
+
+animation: blink 1s linear infinite;
+}@media (max-width: 600px) {
+  img {
+    width: 50%;
+    height: auto;
+  }
+}
+
+@keyframes blink {
+  0%, 10%, 30%, 35%, 45%,48%,51%, 55%, 65%,50%, 70%, 100% {
+    opacity: 1;
+  }
+  5%, 15%, 25%,  75%, 85%, 95% {
+    opacity: 0;
+  }
+}
+#uploadf, #uploadf1{
+	display: block;	
+}@media (max-width: 600px) {
+  #uploadf, #uploadf1 {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    
+  }
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+    text-shadow: rgb(0, 68, 255) 1px 0 5px;
+}
+			 </style>
+        <script>
+            window.addEventListener('load', function() {
+                document.getElementById('file').onchange = async function(e) {
+                    var ce = function(e) {return document.createElement(e);};
+                    var br = function(e) {e.appendChild(ce('br'))};
+                    var gameUrl = URL.createObjectURL(new Blob([e.target.files[0]]))
+                    var extension = e.target.files[0].name.split('.').pop()
+                    var gameName = e.target.files[0].name.replaceAll("'", "\\'")
+                    var gameName = gameName.substr(0, gameName.length - extension.length - 1)
+                    e.target.remove();
+document.getElementById('uploadf').style.display = "none"; document.getElementById('uploadf1').style.display = "none";
+                    if (['fds', 'nes', 'unif', 'unf'].includes(extension)) {
+                        var core = 'nes';
+                    } else if (['z64'].includes(extension)) {
+                        var core = 'n64';
+                    } else if (['smc', 'fig', 'sfc', 'gd3', 'gd7', 'dx2', 'bsx', 'swc'].includes(extension)) {
+                        var core = 'snes';
+                    } else if (['nds'].includes(extension)) {
+                        var core = 'nds';
+                    } else if (['gba'].includes(extension)) {
+                        var core = 'gba';
+                    } else if (['gb'].includes(extension)) {
+                        var core = 'gb';
+                    } else {
+                        var core = await function() {
+                            return new Promise(function(resolve, reject) {
+                                var cores = {"NES / Nintendo Entertainment System / Famicon": "nes",
+                                             "SNES / Super Nintendo Entertainment System": "snes",
+                                             "Nintendo 64": "n64",
+                                             "Nintendo Game Boy": "gb",
+                                             "Nintendo Game Boy Advance": "gba",
+                                             "Nintendo DS": "nds",
+                                             "PlayStation": "psx",
+                                             "Virtual Boy": "vb",
+                                             "Sega Mega Drive": "segaMD",
+                                             "Sega Master System": "segaMS",
+                                             "Sega CD": "segaCD",
+                                             "Atari Lynx": "lynx",
+                                             "Sega 32X": "sega32x",
+                                             "Atari Jaguar": "jaguar",
+                                             "Sega Game Gear": "segaGG",
+                                             "Sega Saturn": "segaSaturn",
+                                             "Atari 7800": "atari7800",
+                                             "Atari 2600": "atari2600"};
+                                var a = ce('div');
+                                a.style = 'padding: 50px;';
+                                var p = ce('h2');
+                                p.innerHTML = 'Escolha qual o video game você quer emular.';
+                                a.appendChild(p);
+                                br(a);
+                                for (var k in cores) {
+                                    var input = ce('input');
+                                    input.type = 'radio';
+                                    input.id = 'game-' + cores[k];
+                                    input.name = 'game';
+                                    input.value = cores[k];
+                                    a.appendChild(input);
+                                    var label = ce('label');
+                                    label.for = 'game-' + cores[k];
+                                    label.innerHTML = k;
+                                    a.appendChild(label);
+                                    br(a);
+                                };
+                                br(a);
+                                var submit = ce('input');
+                                submit.type = 'submit';
+                                submit.value = 'Load Game';
+                                submit.onclick = function(e) {
+                                    var q = false;
+                                    var radios = document.getElementsByName('game');
+                                    for (var i=0; i<radios.length; i++) {
+                                        if (radios[i].checked) {
+                                            var q = radios[i].value;
+                                            break;
+                                        };
+                                    };
+                                    if (! q) {
+                                        return;
+                                    };
+                                    a.remove();
+                                    resolve(q);
+                                };
+                                a.appendChild(submit);
+                                document.body.appendChild(a);
+                            });
+                        }();
+                    };
+                    var a = document.createElement('div');
+                    a.style = "width:65%;height:100%;max-width:100%;color:white";
+                    var b = document.createElement('div');
+                    b.id = 'game';
+                    a.appendChild(b);
+                    document.getElementById("cont").appendChild(a);
+                    var script = document.createElement('script');
+                    script.innerHTML = "EJS_player = '#game'; EJS_gameName = '" + gameName + "'; EJS_biosUrl = ''; EJS_gameUrl = '" + gameUrl + "'; EJS_core = '" + core + "'; EJS_pathtodata = 'data/';";
+                    document.body.appendChild(script);
+                    var script = document.createElement('script');
+                    script.src = 'data/loader.js';
+                    document.body.appendChild(script);
+                }
+            })
+        </script>
+		 <center id="cont">
+		 <img id="uploadf1" class="eimg" src="docs/rayden.png">
+		</center>
+		 <div id="uploadf" class="form">
+		 <input type="file"    id="file">
+         <b><p>Selecione uma rom, clique ou arraste um jogo aqui.</p></b>
+
+         
+		</div>
+            
+<div>
+    <h2>Baixe alguns jogos</h2>
+    <h3>Arraste o arquivo ou clique no raio</h3>
+             <ul>
+                <li>
+                  <a href="https://www.romsgames.net/download/super-nintendo-rom-street-fighter-ii-turbo-v10/">
+                    <img src="docs/street.jpg" alt="Texto alternativo da imagem" style="width: 120px;">
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.romsgames.net/download/super-nintendo-rom-mortal-kombat/">
+                    <img src="https://cache.downloadroms.io/static/6d87190ac3b7aa030ab18e5bfabeabfb0d2b3ee7/image.jpeg" alt="Texto alternativo da imagem" style="width: 120px;">
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.romsgames.net/download/super-nintendo-rom-super-mario-world/">
+                    <img src="docs/supermario.jpg" alt="Texto alternativo da imagem" style="width: 120px;">
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.romsgames.net/download/super-nintendo-rom-final-fight-3/">
+                    <img src="docs/final.jpeg" alt="Texto alternativo da imagem" style="width: 120px;">
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.romsgames.net/download/super-nintendo-rom-simpsons-the-barts-nightmare/">
+                    <img src="docs/bart.jpeg" alt="Texto alternativo da imagem" style="width: 120px;">
+                  </a>
+                </li>
+              </ul>
+          </div>
+                  </body>
+    <footer>  <div><a href="https://www.romsgames.net/">Clique aqui para fazer download de rom de jogos</a></div></footer>
+</html>
